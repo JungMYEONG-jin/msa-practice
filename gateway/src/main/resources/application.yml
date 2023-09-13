@@ -21,7 +21,7 @@ spring:
             postLogger: true
       routes:
         - id: first-service
-          uri: lb://MY-FIRST_SERVICE
+          uri: lb://MY-FIRST-SERVICE
           predicates:
             - Path=/first-service/**
           filters:
