@@ -1,0 +1,15 @@
+server:
+  port: 8761
+
+# id
+spring:
+  application:
+    name: discoveryservice
+
+# 기본적으로 eureka client의 역할로서 무언가 하려함
+# 따라서 자신의 정보를 자신에게 등록하게됨
+# 이를 등록하지 않기 위해 false 처리
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
