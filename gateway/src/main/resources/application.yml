@@ -10,7 +10,7 @@ eureka:
 
 spring:
   application:
-    name: gateway-service
+    name: apigateway-service
   cloud:
     gateway:
       routes:
