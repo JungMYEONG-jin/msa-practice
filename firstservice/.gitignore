@@ -37,7 +37,7 @@ out/
 .vscode/
 
 ### other repo ###
-!**/msa/msa-practice/secondservice
-!**/msa/msa-practice/gateway
-!**/msa/msa-practice/zuulserver
-!**/msa/msa-practice/eureka-server
+../secondservice/
+../gateway/
+../zuulserver/
+../eureka-server/
