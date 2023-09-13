@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/second-service")
+@RequestMapping("/")
 public class SecondServiceController {
 
     @GetMapping("/welcome")
