@@ -1,12 +1,11 @@
 package com.example.microuserservice.adapter.in.controller;
 
+import com.example.microuserservice.data.RequestUser;
 import com.example.microuserservice.prop.Greeting;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user-service")
@@ -28,5 +27,10 @@ public class UserController {
     @GetMapping("/welcome")
     public String welcome() {
         return environment.getProperty("greeting.message");
+    }
+
+    @PostMapping("/users")
+    public String createUser(@RequestBody RequestUser user) {
+        return "User Registered...";
     }
 }
