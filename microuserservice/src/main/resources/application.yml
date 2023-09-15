@@ -1,9 +1,23 @@
 server:
   port: 0
 
+greeting:
+  message: Welcome, micro UserService
+
 spring:
   application:
     name: user-service
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
+  datasource:
+    url: jdbc:h2:mem:muser
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
 eureka:
   instance:
