@@ -1,7 +1,9 @@
 package com.example.microuserservice.service;
 
+import com.example.microuserservice.adapter.out.ResponseUserMapper;
 import com.example.microuserservice.adapter.out.UserMapper;
 import com.example.microuserservice.data.RequestUser;
+import com.example.microuserservice.data.ResponseUser;
 import com.example.microuserservice.data.UserDto;
 import com.example.microuserservice.persistence.entity.UserEntity;
 import com.example.microuserservice.port.in.UserService;
@@ -16,14 +18,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
+    private final ResponseUserMapper responseUserMapper;
     private final UserSavePort userSavePort;
 
     @Transactional
     @Override
-    public void createUser(RequestUser requestUser) {
+    public UserDto createUser(RequestUser requestUser) {
         UserDto userDto = userMapper.requestToDto(requestUser);
         userDto.setUserId(UUID.randomUUID().toString());
         userDto.setEncPasswd("Encrypted Password");
         userSavePort.save(userDto);
+        return userDto;
     }
 }
