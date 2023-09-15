@@ -1,6 +1,7 @@
 package com.example.microuserservice.adapter.in.controller;
 
 import com.example.microuserservice.data.RequestUser;
+import com.example.microuserservice.port.in.UserService;
 import com.example.microuserservice.prop.Greeting;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final Greeting greeting;
     private final Environment environment;
+    private final UserService userService;
 
     @GetMapping("/health-check")
     public String healthCheck(HttpServletRequest request) {
@@ -30,7 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String createUser(@RequestBody RequestUser user) {
+    public String createUser(@RequestBody RequestUser requestUser) {
+        userService.createUser(requestUser);
         return "User Registered...";
     }
 }

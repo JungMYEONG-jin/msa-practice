@@ -1,7 +1,7 @@
 package com.example.microuserservice.port.in;
 
-import com.example.microuserservice.data.UserDto;
+import com.example.microuserservice.data.RequestUser;
 
 public interface UserService {
-    UserDto createUser(UserDto userDto);
+    void createUser(RequestUser requestUser);
 }
