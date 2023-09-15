@@ -24,6 +24,9 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = userMapper.requestToDto(requestUser);
         userDto.setUserId(UUID.randomUUID().toString());
         userDto.setEncPasswd("Encrypted Password");
-        userSavePort.save(userDto);
+        UserEntity save = userSavePort.save(userDto);
+        System.out.println(save.getId());
+        System.out.println(save.getEmail());
+        System.out.println(save.getName());
     }
 }
