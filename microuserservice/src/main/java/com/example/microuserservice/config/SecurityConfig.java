@@ -34,13 +34,7 @@ public class SecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher( "/lib/**"));
     }
 
-    /**
-     * 1/4 현재 개발중이므로 cors 그냥 disable 해놓자
-     * 추후 배포에 cors 적용
-     * requestMatchers(CorsUtils::isPreFlightRequest).permitAll() xhr fail되면 이거 적용
-     * @param http
-     * @return
-     */
+
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
