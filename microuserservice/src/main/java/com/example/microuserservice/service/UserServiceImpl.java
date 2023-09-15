@@ -9,6 +9,7 @@ import com.example.microuserservice.persistence.entity.UserEntity;
 import com.example.microuserservice.port.in.UserService;
 import com.example.microuserservice.port.out.UserSavePort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
     private final ResponseUserMapper responseUserMapper;
     private final UserSavePort userSavePort;
 
@@ -26,7 +28,7 @@ public class UserServiceImpl implements UserService {
     public UserDto createUser(RequestUser requestUser) {
         UserDto userDto = userMapper.requestToDto(requestUser);
         userDto.setUserId(UUID.randomUUID().toString());
-        userDto.setEncPasswd("Encrypted Password");
+        userDto.setEncPasswd(passwordEncoder.encode(userDto.getPwd()));
         userSavePort.save(userDto);
         return userDto;
     }
