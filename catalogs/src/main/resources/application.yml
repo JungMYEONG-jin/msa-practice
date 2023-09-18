@@ -14,12 +14,13 @@ spring:
         web-allow-others: true
       path: /h2-console
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
     show-sql: true
     generate-ddl: true
   datasource:
-    url: jdbc:h2:mem:muser
+    url: jdbc:h2:mem:testdb
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -33,8 +34,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
-
-
 
 logging:
   level:
