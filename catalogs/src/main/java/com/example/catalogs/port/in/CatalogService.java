@@ -1,9 +1,9 @@
 package com.example.catalogs.port.in;
 
-import com.example.catalogs.adapter.out.persistence.CatalogEntity;
+import com.example.catalogs.domain.Catalog;
 
 import java.util.List;
 
 public interface CatalogService {
-    List<CatalogEntity> getAllCatalogs();
+    List<Catalog> getAllCatalogs();
 }
