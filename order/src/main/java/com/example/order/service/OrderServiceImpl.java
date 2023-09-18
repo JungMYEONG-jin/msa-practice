@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,6 +43,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> getOrdersByUserId(String userId) {
         List<Order> orders = orderFindPort.findByUserId(userId);
-        return orders.stream().map(it -> orderMapper.domainToDto(it)).collect(Collectors.toList());
+        return Optional.ofNullable(orders).orElse(Collections.emptyList()).stream().map(it -> orderMapper.domainToDto(it)).collect(Collectors.toList());
     }
 }
