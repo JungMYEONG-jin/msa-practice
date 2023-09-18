@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     UserEntity dtoToEntity(UserDto userDto);
+    UserDto entityToDto(UserEntity userEntity);
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "encPasswd", ignore = true)
     UserDto requestToDto(RequestUser requestUser);
