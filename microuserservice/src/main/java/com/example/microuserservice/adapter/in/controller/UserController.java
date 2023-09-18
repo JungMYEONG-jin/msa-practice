@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -48,13 +49,22 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity getAllUser() {
-        List<ResponseUser> result = userService.getAllUser();
+        List<UserDto> all = userService.getAllUser();
+        List<ResponseUser> result = new ArrayList<>();
+
+        all.forEach(it -> {
+            ResponseUser responseUser = responseUserMapper.dtoToResponse(it);
+            responseUser.setOrders(new ArrayList<>());
+            result.add(responseUser);
+        });
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/users/{userId}")
     public ResponseEntity getUser(@PathVariable("userId") String userId) {
-        ResponseUser userByUserId = userService.getUserByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(userByUserId);
+        UserDto userByUserId = userService.getUserByUserId(userId);
+        ResponseUser result = responseUserMapper.dtoToResponse(userByUserId);
+        result.setOrders(new ArrayList<>());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

@@ -40,19 +40,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseUser getUserByUserId(String userId) {
+    public UserDto getUserByUserId(String userId) {
         UserDto user = userFindPort.findUserByUserId(userId);
         if (user == null)
             throw new UsernameNotFoundException("User Not Found");
-        ResponseUser responseUser = responseUserMapper.dtoToResponse(user);
-        responseUser.setOrders(new ArrayList<>());
-        return responseUser;
+        return user;
     }
 
     @Override
-    public List<ResponseUser> getAllUser() {
-        List<ResponseUser> collect = userFindPort.findAll().stream().map(it -> responseUserMapper.dtoToResponse(it)).collect(Collectors.toList());
-        collect.forEach(it -> it.setOrders(new ArrayList<>()));
-        return collect;
+    public List<UserDto> getAllUser() {
+        return userFindPort.findAll();
     }
 }
