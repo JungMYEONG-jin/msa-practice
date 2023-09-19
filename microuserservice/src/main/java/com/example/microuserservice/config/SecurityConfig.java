@@ -1,9 +1,11 @@
 package com.example.microuserservice.config;
 
 import com.example.microuserservice.filter.AuthenticationFilter;
+import com.example.microuserservice.port.out.UserFindPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +21,8 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @RequiredArgsConstructor
 public class SecurityConfig{
     private final CustomAuthenticationManager customAuthenticationManager;
+    private final UserFindPort userFindPort;
+    private final Environment environment;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -49,8 +53,6 @@ public class SecurityConfig{
     }
 
     private AuthenticationFilter getAuthenticationFilter() {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
-        authenticationFilter.setAuthenticationManager(customAuthenticationManager);
-        return authenticationFilter;
+        return new AuthenticationFilter(customAuthenticationManager, userFindPort, environment);
     }
 }
