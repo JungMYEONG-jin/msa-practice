@@ -1,23 +1,35 @@
 package com.example.microuserservice.config;
 
+import com.example.microuserservice.filter.AuthenticationFilter;
+import com.example.microuserservice.port.in.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+@RequiredArgsConstructor
+public class SecurityConfig{
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final Environment environment;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -39,10 +51,19 @@ public class SecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers(new MvcRequestMatcher(introspector, "/user-service/**")).permitAll()
-                .anyRequest().authenticated())
+                        authorize.requestMatchers(new MvcRequestMatcher(introspector, "/**"))
+                                .access(new WebExpressionAuthorizationManager("hasIpAddress(192.168.0.8)")))
+//                                .anyRequest()
+//                                .authenticated())
+                .addFilter(getAuthenticationFilter())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
+    }
+
+    private AuthenticationFilter getAuthenticationFilter() {
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        authenticationFilter.setAuthenticationManager(authenticationManager);
+        return authenticationFilter;
     }
 
 }
