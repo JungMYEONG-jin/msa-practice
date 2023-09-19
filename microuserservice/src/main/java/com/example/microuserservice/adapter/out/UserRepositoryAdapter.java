@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -26,6 +25,11 @@ public class UserRepositoryAdapter implements UserSavePort, UserFindPort {
     @Override
     public UserDto findUserByUserId(String userId) {
         return userRepository.findByUserId(userId).map(user -> userMapper.entityToDto(user)).orElse(null);
+    }
+
+    @Override
+    public UserDto findUserByEmail(String email) {
+        return userRepository.findByEmail(email).map(userMapper::entityToDto).orElse(null);
     }
 
     @Override

@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface UserFindPort {
     UserDto findUserByUserId(String userId);
+    UserDto findUserByEmail(String email);
     List<UserDto> findAll();
 }
