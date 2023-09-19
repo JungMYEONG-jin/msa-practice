@@ -4,7 +4,6 @@ import com.example.microuserservice.filter.AuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,7 +36,8 @@ public class SecurityConfig{
     protected SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers(new MvcRequestMatcher.Builder(introspector).pattern(HttpMethod.GET, "/**")).permitAll()
+                        authorize.requestMatchers(new MvcRequestMatcher(introspector, "/**")).permitAll()
+//                                requestMatchers(new MvcRequestMatcher.Builder(introspector).pattern(HttpMethod.GET, "/users/**")).permitAll()
 //                                .requestMatchers(new MvcRequestMatcher(introspector, "/greeting")).permitAll()
 //                                .requestMatchers(new MvcRequestMatcher(introspector, "/welcome")).permitAll()
 //                                .requestMatchers(new MvcRequestMatcher(introspector, "/health-check")).permitAll()
