@@ -26,15 +26,10 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     }
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        System.out.println("authentication = " + authentication.getName());
         UserDetails userDetails = customUserDetailService.loadUserByUsername(authentication.getName());
         if (!passwordEncoder().matches(authentication.getCredentials().toString(), userDetails.getPassword())) {
-            System.out.println("Wrong password = ");
             throw new BadCredentialsException("Wrong password");
         }
-        System.out.println(" login success ");
-        System.out.println("userDetails username = " + userDetails.getUsername());
-        System.out.println("userDetails password = " + userDetails.getPassword());
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
     }
 }

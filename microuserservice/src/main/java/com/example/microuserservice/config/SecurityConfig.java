@@ -31,7 +31,6 @@ public class SecurityConfig{
                 .requestMatchers(new AntPathRequestMatcher( "/lib/**"));
     }
 
-
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
@@ -54,5 +53,4 @@ public class SecurityConfig{
         authenticationFilter.setAuthenticationManager(customAuthenticationManager);
         return authenticationFilter;
     }
-
 }
