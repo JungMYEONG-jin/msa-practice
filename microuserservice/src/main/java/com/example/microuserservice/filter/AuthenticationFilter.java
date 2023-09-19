@@ -4,6 +4,8 @@ import com.example.microuserservice.data.LoginRequestDto;
 import com.example.microuserservice.data.UserDto;
 import com.example.microuserservice.port.out.UserFindPort;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -53,5 +56,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             throw new UsernameNotFoundException(username);
         }
         log.debug("user id {}", user.getUserId());
+
+        String token = Jwts.builder()
+                .setSubject(user.getUserId())
+                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(environment.getProperty("token.expiration.time"))))
+                .signWith(SignatureAlgorithm.HS512, environment.getProperty("token.secret"))
+                .compact();
+        response.addHeader("token", token);
+        response.addHeader("userId", user.getUserId());
     }
 }
