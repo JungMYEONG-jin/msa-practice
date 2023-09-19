@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -30,19 +28,16 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setTotalPrice(orderDto.getUnitPrice() * orderDto.getQty());
         // dto to domain
         Order order = orderMapper.dtoToDomain(orderDto);
-        Order savedOrder = orderSavePort.save(order);
-        return orderMapper.domainToDto(savedOrder);
+        return orderMapper.domainToDto(orderSavePort.save(order));
     }
 
     @Override
     public OrderDto getOrderByOrderId(String orderId) {
-        Order order = orderFindPort.findByOrderId(orderId);
-        return orderMapper.domainToDto(order);
+        return orderMapper.domainToDto(orderFindPort.findByOrderId(orderId));
     }
 
     @Override
     public List<OrderDto> getOrdersByUserId(String userId) {
-        List<Order> orders = orderFindPort.findByUserId(userId);
-        return Optional.ofNullable(orders).orElse(Collections.emptyList()).stream().map(it -> orderMapper.domainToDto(it)).collect(Collectors.toList());
+        return orderFindPort.findByUserId(userId).stream().map(orderMapper::domainToDto).collect(Collectors.toList());
     }
 }

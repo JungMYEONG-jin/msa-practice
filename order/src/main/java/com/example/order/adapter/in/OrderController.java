@@ -3,6 +3,7 @@ package com.example.order.adapter.in;
 import com.example.order.data.OrderDto;
 import com.example.order.data.RequestOrder;
 import com.example.order.data.ResponseOrder;
+import com.example.order.domain.Order;
 import com.example.order.mapper.OrderRequestMapper;
 import com.example.order.mapper.OrderResponseMapper;
 import com.example.order.port.in.OrderService;
@@ -37,16 +38,16 @@ public class OrderController {
 
     @PostMapping("/{userId}/orders")
     public ResponseEntity createOrder(@PathVariable("userId") String userId, @RequestBody RequestOrder requestOrder) {
-        OrderDto dto = orderRequestMapper.requestToDto(requestOrder);
-        dto.setUserId(userId);
-        OrderDto order = orderService.createOrder(dto);
+        OrderDto orderDto = orderRequestMapper.requestToDto(requestOrder);
+        orderDto.setUserId(userId);
+        OrderDto order = orderService.createOrder(orderDto);
         ResponseOrder response = orderResponseMapper.dtoToResponse(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{userId}/orders")
     public ResponseEntity getOrders(@PathVariable("userId") String userId) {
-        List<ResponseOrder> response = orderService.getOrdersByUserId(userId).stream().map(it -> orderResponseMapper.dtoToResponse(it)).collect(Collectors.toList());
+        List<ResponseOrder> response = orderService.getOrdersByUserId(userId).stream().map(orderResponseMapper::dtoToResponse).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

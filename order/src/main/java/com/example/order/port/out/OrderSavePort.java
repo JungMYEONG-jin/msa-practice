@@ -5,5 +5,4 @@ import com.example.order.domain.Order;
 
 public interface OrderSavePort {
     Order save(Order order);
-    Order save(OrderDto orderDto);
 }
