@@ -33,7 +33,16 @@ logging:
   level:
     com.example.microuserservice: DEBUG
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - refresh
+          - health
+          - beans
 #token:
 #  secret: YW5qZmtyaGR5c29ya3JsZGlyZ2tla3JoZHlybXJwYW50bXN0aGZsZGxzcmsyM2FrZmVoZGtzZWhsc21zdGhmbGdrd2xha3RwZHlkbHNkaWRrcmdsd2xka3NnZGs=
 #  expiration:
 #    time: 86400000
+
