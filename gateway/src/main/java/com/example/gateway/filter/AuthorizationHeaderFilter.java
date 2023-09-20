@@ -19,9 +19,13 @@ import reactor.core.publisher.Mono;
  */
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
     private final Environment environment;
+
+    public AuthorizationHeaderFilter(Environment environment) {
+        super(Config.class); // casting 정보 전달
+        this.environment = environment;
+    }
 
     @Override
     public GatewayFilter apply(Config config) {
