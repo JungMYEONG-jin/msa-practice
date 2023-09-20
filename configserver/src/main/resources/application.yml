@@ -6,6 +6,7 @@ spring:
     name: config-service
   cloud:
     config:
+      label: main
       server:
         git:
-          uri: file:///Users/a60156077/work/git-local-repo
+          uri: https://github.com/JungMYEONG-jin/cloud-config.git
