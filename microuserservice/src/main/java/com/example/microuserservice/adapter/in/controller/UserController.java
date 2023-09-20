@@ -27,7 +27,11 @@ public class UserController {
 
     @GetMapping("/health-check")
     public String healthCheck(HttpServletRequest request) {
-        return String.format("Working my port is %s, Local Address is %s", request.getServerPort(), request.getLocalAddr());
+        return String.format("Working my port is %s, Local Address is %s, token secret is %s, token exp %s milliseconds",
+                request.getServerPort(),
+                request.getLocalAddr(),
+                environment.getProperty("token.secret"),
+                environment.getProperty("token.expiration.time"));
     }
 
     @GetMapping("/greeting")
