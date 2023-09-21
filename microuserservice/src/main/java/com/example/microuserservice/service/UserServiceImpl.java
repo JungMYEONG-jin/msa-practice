@@ -5,6 +5,7 @@ import com.example.microuserservice.client.OrderServiceClient;
 import com.example.microuserservice.data.RequestUser;
 import com.example.microuserservice.data.ResponseOrder;
 import com.example.microuserservice.data.UserDto;
+import com.example.microuserservice.decoder.FeignErrorDecoder;
 import com.example.microuserservice.port.in.UserService;
 import com.example.microuserservice.port.out.UserFindPort;
 import com.example.microuserservice.port.out.UserSavePort;
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
     private final Environment environment;
     private final RestTemplate restTemplate;
     private final OrderServiceClient orderServiceClient;
+    private final FeignErrorDecoder feignErrorDecoder;
+
 
     @Transactional
     @Override

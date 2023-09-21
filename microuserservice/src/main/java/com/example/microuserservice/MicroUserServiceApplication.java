@@ -1,5 +1,6 @@
 package com.example.microuserservice;
 
+import com.example.microuserservice.decoder.FeignErrorDecoder;
 import feign.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,5 +29,10 @@ public class MicroUserServiceApplication {
 	@Bean
 	public Logger.Level feignLoggerLevel() {
 		return Logger.Level.FULL;
+	}
+
+	@Bean
+	public FeignErrorDecoder feignErrorDecoder() {
+		return new FeignErrorDecoder();
 	}
 }
