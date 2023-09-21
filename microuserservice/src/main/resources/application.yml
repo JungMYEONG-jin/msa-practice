@@ -25,7 +25,8 @@ eureka:
 
 logging:
   level:
-    com.example.microuserservice: DEBUG
+#    com.example.microuserservice: DEBUG
+    com.exmaple.microuserservice.client: DEBUG
 
 management:
   endpoints:
