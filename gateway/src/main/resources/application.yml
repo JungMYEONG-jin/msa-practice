@@ -1,6 +1,17 @@
 server:
   port: 8000
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - refresh
+          - health
+          - beans
+          - httpexchanges
+          - busrefresh
+
 token:
   secret: YW5qZmtyaGR5c29ya3JsZGlyZ2tla3JoZHlybXJwYW50bXN0aGZsZGxzcmsyM2FrZmVoZGtzZWhsc21zdGhmbGdrd2xha3RwZHlkbHNkaWRrcmdsd2xka3NnZGs=
 
@@ -12,6 +23,11 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   application:
     name: apigateway-service
   cloud:
@@ -32,6 +48,14 @@ spring:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
