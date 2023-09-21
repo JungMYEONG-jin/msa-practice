@@ -8,7 +8,9 @@ import com.example.microuserservice.data.UserDto;
 import com.example.microuserservice.port.in.UserService;
 import com.example.microuserservice.port.out.UserFindPort;
 import com.example.microuserservice.port.out.UserSavePort;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,9 +18,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -54,7 +58,12 @@ public class UserServiceImpl implements UserService {
 //        List<ResponseOrder> orders = response.getBody();
 
         // feign client
-        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
+        List<ResponseOrder> orders = new ArrayList<>();
+        try {
+            orders = orderServiceClient.getOrders(userId);
+        } catch (FeignException e) {
+            log.error("error message {}", e.getMessage());
+        }
         user.setOrders(orders);
         return user;
     }
