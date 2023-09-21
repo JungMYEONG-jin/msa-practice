@@ -30,9 +30,4 @@ public class MicroUserServiceApplication {
 	public Logger.Level feignLoggerLevel() {
 		return Logger.Level.FULL;
 	}
-
-	@Bean
-	public FeignErrorDecoder feignErrorDecoder() {
-		return new FeignErrorDecoder();
-	}
 }
