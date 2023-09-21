@@ -5,6 +5,11 @@ greeting:
   message: Welcome, micro UserService
 
 spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   application:
     name: user-service
   h2:
@@ -41,6 +46,7 @@ management:
           - refresh
           - health
           - beans
+          - busrefresh
 #token:
 #  secret: YW5qZmtyaGR5c29ya3JsZGlyZ2tla3JoZHlybXJwYW50bXN0aGZsZGxzcmsyM2FrZmVoZGtzZWhsc21zdGhmbGdrd2xha3RwZHlkbHNkaWRrcmdsd2xka3NnZGs=
 #  expiration:
