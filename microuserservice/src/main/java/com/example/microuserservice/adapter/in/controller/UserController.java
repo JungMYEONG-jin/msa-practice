@@ -68,7 +68,7 @@ public class UserController {
     public ResponseEntity getUser(@PathVariable("userId") String userId) {
         UserDto userByUserId = userService.getUserByUserId(userId);
         ResponseUser result = responseUserMapper.dtoToResponse(userByUserId);
-        result.setOrders(new ArrayList<>());
+//        result.setOrders(new ArrayList<>());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

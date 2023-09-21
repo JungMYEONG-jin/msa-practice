@@ -14,5 +14,6 @@ public interface UserMapper {
     UserDto entityToDto(UserEntity userEntity);
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "encPasswd", ignore = true)
+    @Mapping(target = "orders", ignore = true)
     UserDto requestToDto(RequestUser requestUser);
 }
