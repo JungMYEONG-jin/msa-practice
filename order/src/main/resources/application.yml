@@ -20,10 +20,10 @@ spring:
     show-sql: true
     generate-ddl: true
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
+    url: jdbc:mysql://localhost:3306/mydb
+    username: root
     password:
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 eureka:
   instance:
