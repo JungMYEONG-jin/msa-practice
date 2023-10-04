@@ -6,11 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Table(name = "orders")
 @Entity
@@ -18,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderEntity implements Serializable {
+public class OrderEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,10 +30,4 @@ public class OrderEntity implements Serializable {
     private String userId;
     @Column(nullable = false, unique = true)
     private String orderId;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    private LocalDateTime updateDate;
 }
