@@ -2,6 +2,7 @@ package com.example.microuserservice.service;
 
 import com.example.microuserservice.adapter.out.UserMapper;
 import com.example.microuserservice.client.OrderServiceClient;
+import com.example.microuserservice.config.Resilience4jConfig;
 import com.example.microuserservice.data.RequestUser;
 import com.example.microuserservice.data.ResponseOrder;
 import com.example.microuserservice.data.UserDto;
@@ -9,8 +10,13 @@ import com.example.microuserservice.decoder.FeignErrorDecoder;
 import com.example.microuserservice.port.in.UserService;
 import com.example.microuserservice.port.out.UserFindPort;
 import com.example.microuserservice.port.out.UserSavePort;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,6 +40,7 @@ public class UserServiceImpl implements UserService {
     private final RestTemplate restTemplate;
     private final OrderServiceClient orderServiceClient;
     private final FeignErrorDecoder feignErrorDecoder;
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
 
     @Transactional
@@ -59,7 +67,10 @@ public class UserServiceImpl implements UserService {
 //        List<ResponseOrder> orders = response.getBody();
 
         // feign client
-        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
+//        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
+        CircuitBreaker circuitbreaker = circuitBreakerFactory.create("circuitbreaker");
+        List<ResponseOrder> orders = circuitbreaker.run(() -> orderServiceClient.getOrders(userId),
+                throwable -> new ArrayList<>());
         user.setOrders(orders);
         return user;
     }
