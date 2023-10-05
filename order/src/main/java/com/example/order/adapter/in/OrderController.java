@@ -6,6 +6,7 @@ import com.example.order.data.ResponseOrder;
 import com.example.order.domain.Order;
 import com.example.order.mapper.OrderRequestMapper;
 import com.example.order.mapper.OrderResponseMapper;
+import com.example.order.mq.KafkaProducer;
 import com.example.order.port.in.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class OrderController {
     private final Environment environment;
     private final OrderResponseMapper orderResponseMapper;
     private final OrderRequestMapper orderRequestMapper;
+    private final KafkaProducer kafkaProducer;
 
     @GetMapping("/health-check")
     public String healthCheck(HttpServletRequest request) {
@@ -38,10 +40,14 @@ public class OrderController {
 
     @PostMapping("/{userId}/orders")
     public ResponseEntity createOrder(@PathVariable("userId") String userId, @RequestBody RequestOrder requestOrder) {
+        // jpa
         OrderDto orderDto = orderRequestMapper.requestToDto(requestOrder);
         orderDto.setUserId(userId);
         OrderDto order = orderService.createOrder(orderDto);
+        // rest api
         ResponseOrder response = orderResponseMapper.dtoToResponse(order);
+        // kafka
+        kafkaProducer.send("example-catalog-topic", order);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
