@@ -9,7 +9,6 @@ import com.example.microuserservice.decoder.FeignErrorDecoder;
 import com.example.microuserservice.port.in.UserService;
 import com.example.microuserservice.port.out.UserFindPort;
 import com.example.microuserservice.port.out.UserSavePort;
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
