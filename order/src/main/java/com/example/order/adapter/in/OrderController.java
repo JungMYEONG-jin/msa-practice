@@ -7,6 +7,7 @@ import com.example.order.domain.Order;
 import com.example.order.mapper.OrderRequestMapper;
 import com.example.order.mapper.OrderResponseMapper;
 import com.example.order.mq.KafkaProducer;
+import com.example.order.mq.OrderProducer;
 import com.example.order.port.in.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,6 +29,7 @@ public class OrderController {
     private final OrderResponseMapper orderResponseMapper;
     private final OrderRequestMapper orderRequestMapper;
     private final KafkaProducer kafkaProducer;
+    private final OrderProducer orderProducer;
 
     @GetMapping("/health-check")
     public String healthCheck(HttpServletRequest request) {
@@ -43,11 +46,16 @@ public class OrderController {
         // jpa
         OrderDto orderDto = orderRequestMapper.requestToDto(requestOrder);
         orderDto.setUserId(userId);
-        OrderDto order = orderService.createOrder(orderDto);
-        // rest api
-        ResponseOrder response = orderResponseMapper.dtoToResponse(order);
+        orderDto.setOrderId(UUID.randomUUID().toString());
+        orderDto.setTotalPrice(requestOrder.getUnitPrice() * requestOrder.getQty());
+
         // kafka
-        kafkaProducer.send("example-catalog-topic", order);
+        kafkaProducer.send("example-catalog-topic", orderDto);
+        orderProducer.send("orders", orderDto);
+
+        // rest api
+        ResponseOrder response = orderResponseMapper.dtoToResponse(orderDto);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
