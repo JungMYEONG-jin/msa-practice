@@ -38,6 +38,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.2.Final' // MapStruct 버전은 필요에 따라 변경 가능
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
     implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.springframework.kafka:spring-kafka'
 }
 
 dependencyManagement {
