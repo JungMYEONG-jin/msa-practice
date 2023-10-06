@@ -19,6 +19,7 @@ public class Resilience4jConfig {
                 .waitDurationInOpenState(Duration.ofMillis(1000))
                 .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.COUNT_BASED)
                 .slidingWindowSize(2)
+                .minimumNumberOfCalls(5)
                 .build();
 
         TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.custom()
