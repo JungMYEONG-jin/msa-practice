@@ -24,17 +24,19 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
   level:
-#    com.example.microuserservice: DEBUG
-    com.exmaple.microuserservice.client: DEBUG
+    com.example.microuserservice: DEBUG
+#    com.exmaple.microuserservice.client: DEBUG
 
 management:
   tracing:
     sampling:
       probability: 1.0
     propagation:
-      consume: b3_single
-      produce: b3_multi
+      consume: B3
+      produce: B3_MULTI
   zipkin:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans
@@ -46,6 +48,7 @@ management:
           - health
           - beans
           - busrefresh
+          - zipkin
 #token:
 #  secret: YW5qZmtyaGR5c29ya3JsZGlyZ2tla3JoZHlybXJwYW50bXN0aGZsZGxzcmsyM2FrZmVoZGtzZWhsc21zdGhmbGdrd2xha3RwZHlkbHNkaWRrcmdsd2xka3NnZGs=
 #  expiration:
