@@ -6,6 +6,7 @@ import com.example.microuserservice.data.ResponseUser;
 import com.example.microuserservice.data.UserDto;
 import com.example.microuserservice.port.in.UserService;
 import com.example.microuserservice.prop.Greeting;
+import io.micrometer.core.annotation.Timed;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
@@ -26,6 +27,7 @@ public class UserController {
     private final ResponseUserMapper responseUserMapper;
 
     @GetMapping("/health-check")
+    @Timed(value = "users.status", longTask = true)
     public String healthCheck(HttpServletRequest request) {
         return String.format("Working my port is %s, Local Address is %s, token secret is %s, token exp %s milliseconds",
                 request.getServerPort(),
@@ -40,6 +42,7 @@ public class UserController {
     }
 
     @GetMapping("/welcome")
+    @Timed(value = "users.welcome", longTask = true)
     public String welcome() {
         return environment.getProperty("greeting.message");
     }
