@@ -1,7 +1,5 @@
 package com.example.catalogs.mq;
 
-import com.example.catalogs.adapter.out.persistence.CatalogEntity;
-import com.example.catalogs.adapter.out.persistence.CatalogRepository;
 import com.example.catalogs.domain.Catalog;
 import com.example.catalogs.port.out.CatalogFindPort;
 import com.example.catalogs.port.out.CatalogSavePort;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,6 +27,7 @@ public class KafkaConsumer {
     public void updateQty(String message) {
         log.info("message {}", message);
         Map<Object, Object> map = new HashMap<>();
+//        ObjectMapper objectMapper = new ObjectMapper();
         try{
             map = objectMapper.readValue(message, new TypeReference<Map<Object, Object>>() {
             });

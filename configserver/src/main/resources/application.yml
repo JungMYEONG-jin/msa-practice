@@ -19,5 +19,16 @@ spring:
         native:
           search-locations:
             - file://${user.home}/Desktop/cert/config
-        git:
-          uri: https://github.com/JungMYEONG-jin/cloud-config.git
+#        git:
+#          uri: https://github.com/JungMYEONG-jin/cloud-config.git
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - refresh
+          - health
+          - beans
+          - httpexchanges
+          - busrefresh
